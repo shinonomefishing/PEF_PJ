@@ -1,0 +1,24 @@
+<html>
+    <%- include("header") %>
+    <body>
+        <%- include("head") %>
+        <%- include("laout") %>
+    </div>
+    <div class="mainpacket" id="packet">
+
+    </div>
+        <script type="text/javascript" src="leftnav.js"></script>
+        <script>
+            var webSocket = new WebSocket("ws://localhost:8005");
+            var labels = document.createElement('div');
+            webSocket.onopen = (function ws() {
+                console.log("연결성공");
+            });
+            webSocket.onmessage = (function (e){
+                console.log(e);
+                document.getElementById("packet").append(e.data);
+            });
+            
+        </script>
+    </body>
+</html>

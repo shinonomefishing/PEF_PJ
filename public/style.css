@@ -1,0 +1,180 @@
+body{
+    padding: 0%;
+    margin: 0%;
+}
+.nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #333333; 
+    width: auto; 
+    height: 6em;
+    margin: 0;
+    padding: 0;
+}
+.open{
+    color: #ffffff;
+    font-size: 25px;
+    vertical-align: middle;
+    text-decoration: none;
+}
+.open a{
+    color: #ffffff;
+    text-decoration: none;
+}
+.clicke{
+    color: #cccccc;
+    vertical-align: middle;
+    padding-left: 1em;
+}
+.dropdown{
+    color: #cccccc;
+    vertical-align: middle;
+    padding-left: 1em;
+    position: relative;
+    display: inline-block;
+}
+.dropbtn{
+    border: none;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: #F1F1F1;
+    min-width: 80px;
+    z-index: 1;
+}
+.dropdown-content a{
+    color: black;
+    text-decoration: none;
+    display: block;
+}
+.dropdown-content a:hover {background-color: #ddd;}
+.dropdown:hover .dropdown-content {display: block;}
+.person{
+    color: #ffffff;
+    float: right;
+    padding:2em 2em 0 0;
+}
+.menu{
+    display: flex;
+    flex-direction: row;
+    float: left;
+    padding:2em 0 0 2em;
+}
+.person > label{
+    vertical-align: middle;
+    padding-right: 1em;
+}
+.maincontainer{
+    display: flex;
+    flex-direction: row;
+    height: 90%;
+}
+.leftnav{
+    display: flex;
+    background-color: #333333;
+    height: 100%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    flex-basis: 20%;
+    width: 20%;
+}
+.leftnav > .modecontainer{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-around;
+}
+.leftnav > .modecontainer > .modeitem{
+    color: #ffffff;
+    border: 1px white solid;
+    padding: 0 20% 0 20%;
+}.leftnav > .modecontainer > .modeitem a{
+    color: #ffffff;
+    text-decoration: none;
+}
+.leftnav > .anchorcontainer{
+    display: flex;
+    justify-content: center;
+}
+.leftnav > .anchorcontainer > table{
+    text-align: center;
+    color: #ffffff;
+}
+.leftnav > .anchorcontainer > table > thead > tr > td{
+    border: #ffffff 1px solid;
+}
+.leftnav > .anchorcontainer > table > tbody > tr > td{
+    border: #ffffff 1px solid;
+    padding: 0;
+}
+.leftnav > .anchorcontainer > table > tbody > tr > td > input{
+    width: 100%;
+    border: 0;
+    padding: 0;
+}
+.leftnav > .anchorcontainer > table > tbody > tr > td > button{
+    width: 100%;
+}
+.subbtn{
+    float: right;
+    margin: 1em 1em 0 0;
+    width: 4em;
+    height: 3em;
+}
+.leftnav > .boxcontainer > .serchitem{
+    width: 100%;
+    flex-basis: 100%;
+}
+.leftnav > .boxcontainer > .item{
+    color : white;
+}
+.map_container{
+    overflow: hidden;
+    place-items: center;
+    width: 75em;
+    height: 50em;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.map{
+    cursor: move;
+    transition: all 0.01s;
+    width: 50em;
+    height: 50em;
+    position: absolute;
+    object-fit: cover;
+}
+.fileselecter{
+    width: 90%;
+    background-color: #ffffff;
+    color: #000000;
+}
+.rightnav{
+    display: flex;
+    background-color: #333333;
+    width: 100%;
+    flex-basis: 20%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.rightnav > .calander{
+    float: right;
+}
+.rightnav > .pbtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 12em;
+    height: 3em;
+    border: 1px solid white;
+}
+.timeline{
+    width: 10em;
+    height: 10em;
+    border: 1px red solid;
+}
