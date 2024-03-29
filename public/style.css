@@ -178,3 +178,17 @@ body{
     height: 10em;
     border: 1px red solid;
 }
+.mainpacket > table{
+    width: 100%;
+}
+.mainpacket > table > tbody > tr{
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: medium;
+}
+.mainpacket > table > thead > tr {
+    text-align: center;
+    border-bottom: 2px solid black;
+    font-size: large;
+    font-weight: 700;
+}

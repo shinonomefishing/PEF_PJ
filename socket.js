@@ -13,6 +13,8 @@ const client = mqtt.connect(option);
 
 const topic = "pef";
 
+var mqtt_connect = false;
+
 var pef_message;
 var count = 0;
 
@@ -30,7 +32,8 @@ client.on("error", (error) => {
   client.on("message", (topic, message) => {
     // message is Buffer
     count = count + 1; 
-    pef_message = message.toString() + ", count = " + count;
+    pef_message = count + "|" + message.toString();
+    mqtt_connect = true;
   });
 
 module.exports = (server) => {
@@ -55,7 +58,10 @@ module.exports = (server) => {
         });
         const interval = setInterval(() => {
             if (ws.readyState === ws.OPEN){
-                ws.send(pef_message);
+                if(mqtt_connect === true){
+                    ws.send(pef_message);
+                }
+                mqtt_connect = false;
             }
         }, 1000);
         ws.interval = interval;

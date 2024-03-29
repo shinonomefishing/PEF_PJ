@@ -5,18 +5,45 @@
         <%- include("laout") %>
     </div>
     <div class="mainpacket" id="packet">
-
+        <table>
+            <thead>
+                <tr>
+                    <td>날짜</td>
+                    <td>count</td>
+                    <td>패킷</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="first_child">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
         <script type="text/javascript" src="leftnav.js"></script>
         <script>
+            var nextchild = document.getElementById("first_child");
             var webSocket = new WebSocket("ws://localhost:8005");
-            var labels = document.createElement('div');
             webSocket.onopen = (function ws() {
                 console.log("연결성공");
             });
             webSocket.onmessage = (function (e){
                 console.log(e);
-                document.getElementById("packet").append(e.data);
+                var labels = document.createElement('div');
+                var packets = e.data.split("|");
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = today.getMonth() + 1;
+                let date = today.getDate();
+                let hours = today.getHours();
+                let minutes = today.getMinutes();
+                let seconds = today.getSeconds();
+                let date_label = year + "/" + month + "/" + date + " " + hours + ":" + minutes + ":" + seconds;
+                let code = '<tr><td class="date_class">'+date_label+'</td><td class="count_class">'+packets[0]+'</td><td class="packet_class">'+packets[1]+'</td></tr>';
+                document.getElementById("first_child").insertAdjacentHTML('afterend', code);
+
             });
             
         </script>
