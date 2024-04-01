@@ -34,6 +34,7 @@ client.on("error", (error) => {
     count = count + 1; 
     pef_message = count + "|" + message.toString();
     mqtt_connect = true;
+    console.log(pef_message);
   });
 
 module.exports = (server) => {
