@@ -29,13 +29,13 @@ client.on("error", (error) => {
     console.log("can not connet" + error);
 })
 
-  client.on("message", (topic, message) => {
+  /*client.on("message", (topic, message) => {
     // message is Buffer
     count = count + 1; 
     pef_message = count + "|" + message.toString();
     mqtt_connect = true;
     console.log(pef_message);
-  });
+  });*/
 
 module.exports = (server) => {
     const wss = new WebSocket.Server({server});
@@ -57,7 +57,15 @@ module.exports = (server) => {
             console.log('클라이언트 접속 해제', ip);
             clearInterval(ws.interval);
         });
-        const interval = setInterval(() => {
+
+        client.on("message", (topic, message) => {
+            count = count + 1;
+            pef_message = count + "|" + message.toString();
+            if(ws.readyState === ws.OPEN){
+                ws.send(pef_message);
+            }
+        })
+        /*const interval = setInterval(() => {
             if (ws.readyState === ws.OPEN){
                 if(mqtt_connect === true){
                     ws.send(pef_message);
@@ -65,6 +73,6 @@ module.exports = (server) => {
                 mqtt_connect = false;
             }
         }, 1000);
-        ws.interval = interval;
+        ws.interval = interval;*/
     });
 };
