@@ -17,6 +17,7 @@ body{
     font-size: 25px;
     vertical-align: middle;
     text-decoration: none;
+    margin-right: 2em;
 }
 .open a{
     color: #ffffff;

@@ -50,6 +50,10 @@ router.get('/', (req, res) => {
     //console.log(map_name)
 });
 
+router.get('/packet', (req, res) => {
+    res.render('packet');
+});
+
 router.get('/view', (req, res) => {
 
 });
