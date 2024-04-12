@@ -61,25 +61,23 @@ module.exports = (server) => {
             //clearInterval(ws.interval);
         });
 
-        /*client.on("message", (topic, message) => {
-            if(ws.readyState === ws.OPEN){
-                count = count + 1; 
+        client.on("message", (topic, message) => {
+            count = count + 1;
+            if(ws.readyState === ws.OPEN){ 
                 pef_message = count + "|" + message.toString();
                 ws.send(pef_message);
                 console.log(pef_message);
             }
-        })*/
-        const interval = setInterval(() => {
+        })
+        /*const interval = setInterval(() => {
             if (ws.readyState === ws.OPEN){
                 if(mqtt_connect === true){
-                    count = count + 1;
-                    pef_message = count + "|" + "175,33,1,0,3,4,0,1000,[50,0],0,0,20,0,127,0,0,0,184,252";
                     ws.send(pef_message);
                     console.log(pef_message);
                 }
                 mqtt_connect = false;
             }
         }, 1000);
-        ws.interval = interval;
+        ws.interval = interval;*/
     });
 };
