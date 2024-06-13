@@ -1,30 +1,83 @@
 <html>
     <%- include("header") %>
     <body>
+        <form action="/update_corpname" method="post">
+        <div class="modal">
+            <div class="modal_body">
+                    <div class="item"><label>업체명</label></div>
+                    <div class="item"><input type="text" value="" name="corpname" id="corp_name"></div>
+                    <div class="item"><input type="submit" value="등록"></div>
+                    <div class="item"><label for="">장비 번호</label></div>
+                    <div class="item"><input type="text" class="dvsn" name="device_number" id="c_number" readonly></div>
+                    <div class="item"><label for="">현재 상태</label></div>
+                    <div class="item"><label for="">VOLTAGE</label></div>
+                    <div class="item"><div class="sevenseg" id="c_volt">0kv</div></div>
+                    <div class="item"><label for="">FREQUENCY</label></div>
+                    <div class="item"><div class="sevenseg" id="c_pulse">0Hz</div></div>
+                    <div class="item"><label for="">PULSEONTIME</label></div>
+                    <div class="item"><div class="sevenseg" id="c_time">0μs</div></div>
+            </div>
+            <div class="modal_close" onclick="modalclose()"></div>
+        </div>
+        </form>
         <%- include("head") %>
         <%- include("laout") %>
     </div>
-    <div class="mainpacket" id="packet">
-        <table>
-            <thead>
-                <tr>
-                    <td>날짜</td>
-                    <td>count</td>
-                    <td>패킷</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr id="first_child">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container" id="packet">
+        <% var co_name = {};
+        for(var j = 0; j < co_info.length; j++){
+            co_name[co_info[j].pef_dvsn] = co_info[j].pef_corpname;
+        } 
+        for(var i = 0; i < result.length; i++){ 
+            var dvsn;
+            var simple;
+            var company;
+            if(result[i].pef_dvsn < 10){
+                dvsn = "00" + result[i].pef_dvsn;
+                simple = result[i].pef_dvsn;
+            }else if(result[i].pef_dvsn < 100){
+                dvsn = "0" + result[i].pef_dvsn;
+                simple = result[i].pef_dvsn;
+            }else if(result[i].pef_dvsn >= 100){
+                dvsn = result[i].pef_dvsn;
+                simple = result[i].pef_dvsn;
+            }else{
+                dvsn;
+            } 
+            if(co_name[result[i].pef_dvsn]){
+                company = co_name[result[i].pef_dvsn];
+            }else{
+                company = "unknown";
+            }
+            %>
+        <div class="pef_machin" id="<%= simple %>" onclick="modal(this)">
+            <div class="circle"></div>
+            <div class="pef_sn">
+                <label for="" class="pef_sn_name"><%= company %></label>
+                <label for="" class="num"><%= dvsn %></label>
+            </div>
+            <div>
+                <label for="" class="t_last">마지막 가동 시간</label>
+                <label for="" class="last_t" id="time_last"><%= result[i].date %></label>
+            </div>
+        </div>
+      <% } %>
     </div>
+    <button onclick="makepefcard()">make</button>
+    <button onclick="insertdb()">insert</button>
+
         <script type="text/javascript" src="leftnav.js"></script>
         <script>
+            var makediv = '<div class="pef_machin"><div class="circle"></div><div class="pef_sn"><label class="pef_sn_name">장비SN</label><label class="num">'+'002'+'</label></div><div><label class="t_last">마지막 가동 시간</label><label class="last_t">'+'2024-05-09-15-38'+'</label></div></div>';
+            function makepefcard(){
+                document.getElementById("first").insertAdjacentHTML('afterend',makediv);
+            }
             var nextchild = document.getElementById("first_child");
+            var c_dvsn;
+            var c_volt = document.getElementById('c_volt');
+            var c_pulse = document.getElementById('c_pulse');
+            var c_time = document.getElementById('c_time');
+            var on_pulse = {};
             var webSocket = new WebSocket("ws://port-0-pef-pj-44rk2bluayy1ro.sel5.cloudtype.app/"); //ws://port-0-pef-pj-44rk2bluayy1ro.sel5.cloudtype.app/
             webSocket.onopen = (function ws() {
                 console.log("연결성공");
@@ -33,23 +86,40 @@
                 console.log(e);
                 var labels = document.createElement('div');
                 var packets = e.data.split("|");
-                let today = new Date();
-                let year = today.getFullYear();
-                let month = today.getMonth() + 1;
-                let date = today.getDate() - 1;
-                let hours = today.getHours();
-                let minutes = today.getMinutes();
-                let seconds = today.getSeconds();
-                let date_label = year + "/" + month + "/" + date + " " + hours + ":" + minutes + ":" + seconds;
+                var pef_data = packets[1].split(',');
+                if(pef_data[2] == c_dvsn){
+                    c_volt.innerHTML = pef_data[13] + "kv";
+                    c_pulse.innerHTML = pef_data[10] + "hz";
+                    c_time.innerHTML = pef_data[8] + "μs";
+                }
                 let code = '<tr><td class="date_class">'+date_label+'</td><td class="count_class">'+packets[0]+'</td><td class="packet_class">'+packets[1]+'</td></tr>';
                 document.getElementById("first_child").insertAdjacentHTML('afterend', code);
-                
             });
             function sendws(){
                 webSocket.send("aa");
             }
-            
-            
+            function insertdb(){
+                webSocket.send("insert");
+            }
+            var modal_A = document.querySelector('.modal');
+            function modal(id){
+                var name = {};
+                '<% for(var i = 0; i < co_info.length; i++ ){%>'
+                    name['<%=co_info[i].pef_dvsn%>'] = '<%=co_info[i].pef_corpname%>';
+                '<%}%>'
+                modal_A.style.display = "flex";
+                var device_num = document.querySelector('.dvsn');
+                var corp_name = document.getElementById('corp_name');
+                device_num.value = id.id;
+                corp_name.value = name[id.id];
+                c_dvsn = name[id.id];
+                c_pulse.innerHTML = '0hz';
+                c_volt.innerHTML = '0kv';
+                c_time.innerHTML = '0μs';
+            }
+            function modalclose(){
+                modal_A.style.display = "none";
+            }
         </script>
     </body>
 </html>

@@ -33,7 +33,6 @@ app.use(session({
 app.use(flash());
 
 app.use('/', indexRouter);
-app.use('/innerMap', indexRouter);
 
 app.use((req, res, next) => {
     const err = new Error('Not Found');
